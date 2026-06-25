@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正在连接 WhatsApp 客服…</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      color: #333;
+    }
+    .loader {
+      text-align: center;
+    }
+    .spinner {
+      border: 4px solid #ddd;
+      border-top: 4px solid #25D366;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader">
+    <div class="spinner"></div>
+    <p>正在为您分配专属客服…</p >
+  </div>
+
+  <script>
+    (function() {
+      // 三个客服号码（按你提供的）
+      var numbers = [
+        '+8619809763559',
+        '+8618505056553',
+        '+8618596903767'
+      ];
+
+      // Cookie 名称，用来记住分配给这个访客的号码
+      var COOKIE_NAME = 'wa_agent_no';
+
+      // 读取 Cookie 的值
+      function getCookie(name) {
+        var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+      }
+
+      // 写入 Cookie（有效期一年）
+      function setCookie(name, value, days) {
+        var d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = name + '=' + encodeURIComponent(value) + '; path=/; expires=' + d.toUTCString();
+      }
+
+      var assignedNumber = getCookie(COOKIE_NAME);
+
+      // 如果还没分配过，随机选一个并记住
+      if (!assignedNumber) {
+        assignedNumber = numbers[Math.floor(Math.random() * numbers.length)];
+        setCookie(COOKIE_NAME, assignedNumber, 365);
+      }
+
+      // 立即跳转到对应的 WhatsApp 聊天
+      window.location.href = 'https://wa.me/' + assignedNumber;
+    })();
+  </script>
+</body>
+</html>
